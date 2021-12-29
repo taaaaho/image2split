@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './App.css';
-import { Stack, Heading, Input, Flex, HStack, Image, Button, Box } from '@chakra-ui/react'
+import { Stack, Heading, Input, Flex, HStack, Image, Button, Box, Text } from '@chakra-ui/react'
 import ReactCrop from 'react-image-crop'
 import Loading from './component/Loading';
 
@@ -152,8 +152,9 @@ function App() {
           )}
           </>
           )}
+          <Text color="gray">※スマホの場合は保存ボタンが使えないため、各画像を長押しして画像を保存してください。</Text>
         </Stack>
-      
+        
       <Button 
         disabled={isLoading} 
         onClick={saveImages} 
