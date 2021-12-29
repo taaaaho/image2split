@@ -150,17 +150,19 @@ function App() {
       rounded="lg"
       flexDirection="column"
     >
-      <Flex backgroundColor="white" px="4" py="4" boxShadow="md" w="100%" alignItems="center">
-          <Heading fontSize="2xl" width="1000">画像2分割</Heading>
-          <Spacer />
-          <Box>
-            <Button mr="4" onClick={divideTwo} colorScheme="orange">2分割</Button>
-            <Button mr="4" onClick={squareAspect} colorScheme="blackAlpha">正方形</Button>
-            <Button onClick={fileUpload} colorScheme="twitter">
-              画像を選択する
-            </Button>
-          </Box>
-          <input type="file" hidden accept="image/*" ref={inputRef} onChange={handleImageSelect} />
+      <Flex backgroundColor="white" px="4" py="4" boxShadow="md" w="100%" alignItems="center" justifyContent="space-between">
+        <Heading fontSize={{ base: "xl", md: "2xl"}} whiteSpace="nowrap" >画像2分割</Heading>
+        <Spacer />
+        {targetImage && (
+          <>
+            <Button mr={{ base: "2", md: "4" }} onClick={divideTwo} colorScheme="orange" size="sm">2分割</Button>
+            <Button mr={{ base: "2", md: "4" }} onClick={squareAspect} colorScheme="blackAlpha"  size="sm">正方形</Button>
+          </>
+        )}
+        <Button onClick={fileUpload} colorScheme="twitter"  size="sm">
+          画像を選択
+        </Button>
+        <input type="file" hidden accept="image/*" ref={inputRef} onChange={handleImageSelect} />
       </Flex>
       <Stack mx="4" mt="4" mb="16" flexDirection="column" justifyContent="start" >
         {targetImage && (
