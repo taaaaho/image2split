@@ -10,12 +10,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <head>
-        <title>Resize</title>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width,initial-scale=1" />			
-        <script src="https://unpkg.com/react-image-crop/dist/ReactCrop.min.js"></script>
-      </head> */}
     <ChakraProvider>
       <App />
     </ChakraProvider>
