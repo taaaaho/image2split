@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <head  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +9,15 @@
       name="description"
       content="インスタグラム投稿時に画像を2枚繋げて投稿できるように1枚の画像を正方形の2枚の画像に分割することができます"
     />
+
+    <!-- OGP -->
+    <meta property="og:url" content="https://resize-image.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="2分割君" />
+    <meta property="og:description" content="インスタグラム投稿時に画像を2枚繋げて投稿できるように1枚の画像を正方形の2枚の画像に分割することができます" />
+    <meta property="og:site_name" content="2分割君" />
+    <meta property="og:image" content="%PUBLIC_URL%/ogp_thumbnail.png" />
+
     
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
