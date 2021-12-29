@@ -17,7 +17,17 @@
     <meta property="og:description" content="インスタグラム投稿時に画像を2枚繋げて投稿できるように1枚の画像を正方形の2枚の画像に分割することができます" />
     <meta property="og:site_name" content="2分割君" />
     <meta property="og:image" content="%PUBLIC_URL%/ogp_thumbnail.png" />
-
+    <!-- OGP -->
+    
+    <!-- Splash Screen -->
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/images/splash/launch-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/images/splash/launch-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/images/splash/launch-1242x2208.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/images/splash/launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/images/splash/launch-1536x2048.png" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/images/splash/launch-1668x2224.png" media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/images/splash/launch-2048x2732.png" media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+    <!-- Splash Screen -->
     
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -49,5 +59,16 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').then(function(registration) {
+          // 登録成功
+          console.log('ServiceWorker の登録に成功しました。スコープ: ', registration.scope);
+        }).catch(function(err) {
+          // 登録失敗
+          console.log('ServiceWorker の登録に失敗しました。', err);
+        });
+      }
+    </script>
   </body>
 </html>
