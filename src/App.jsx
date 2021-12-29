@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import './App.css';
-import { Stack, Heading, Input, Flex, HStack, Image, Button, Box, Text } from '@chakra-ui/react'
+import { Stack, Heading, Flex, HStack, Image, Button, Box, Text, Spacer } from '@chakra-ui/react'
 import ReactCrop from 'react-image-crop'
 import Loading from './component/Loading';
 import { isMobile } from "react-device-detect"
@@ -15,22 +15,27 @@ function App() {
     width: 1080,
   });
   const [isLoading, setIsLoading] = useState(false)
+  const inputRef = useRef()
+  const [maxWidth, setMaxWidth] = useState()
 
   const handleImageSelect = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener('load', () =>
+      reader.addEventListener('load', () => {
         setTargetImage(reader.result)
-      );
+      })
       reader.readAsDataURL(e.target.files[0]);
     }
   }
 
+
   const handleImageLoad = (image) => {
+    setMaxWidth(image.width / 2)
     setImageRef(image)
   }
 
   const handleCropChange = (crop, percentCrop) => {
+    console.log(crop)
     setCrop(crop)
   }
 
@@ -109,52 +114,89 @@ function App() {
     dlLink2.click()
   }
 
+  const fileUpload = () => {
+    console.log(inputRef.current);
+    inputRef.current.click();
+  }
+
+  const divideTwo = () => {
+    setCrop({
+      unit: 'px',
+      x: 0,
+      y: 0,
+      width: imageRef.width/2,
+      height: imageRef.height,
+      aspect: false,
+    })
+    handleCropComplete(crop)
+  }
+
+  const squareAspect = () => {
+    setCrop({
+      unit: 'px',
+      x: 0,
+      y: 0,
+      width: imageRef.width/2,
+      aspect: 1,
+    })
+    handleCropComplete(crop)
+  }
+
   return (
     <Flex
       m="0"
       w="100vw"
       bg="white.500"
-      boxShadow="md"
       rounded="lg"
+      flexDirection="column"
     >
-        <Stack marginX="4" mt="4" mb="16" flexDirection="column" justifyContent="start">
+      <Flex backgroundColor="white" px="4" py="4" boxShadow="md" w="100%" alignItems="center">
+          <Heading fontSize="2xl" width="1000">画像2分割</Heading>
+          <Spacer />
           <Box>
-            <Heading fontSize="2xl">画像2分割</Heading>
-            <Input type="file" colorScheme="blue" border="none" padding="0" onChange={handleImageSelect} />
+            <Button mr="4" onClick={divideTwo} colorScheme="orange">2分割</Button>
+            <Button mr="4" onClick={squareAspect} colorScheme="blackAlpha">正方形</Button>
+            <Button onClick={fileUpload} colorScheme="twitter">
+              画像を選択する
+            </Button>
           </Box>
-          {targetImage && (
-            <ReactCrop 
-              ruleOfThirds
-              zoom
-              keepSelection
-              src={targetImage} 
-              onChange={handleCropChange}
-              onImageLoaded={handleImageLoad}
-              onComplete={handleCropComplete}
-              crop={crop}
-              mt="0"
-            >
-            </ReactCrop>
-          )}
-          <Heading fontSize="2xl">分割後イメージ</Heading>
-          {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          {croppedImageLeftUrl && (
-            <HStack spacing="0">
-              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-                <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
-              </Box>
-              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-                <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
-              </Box>
-            </HStack>
-          )}
-          </>
-          )}
-          <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text>
-        </Stack>
+          <input type="file" hidden accept="image/*" ref={inputRef} onChange={handleImageSelect} />
+      </Flex>
+      <Stack mx="4" mt="4" mb="16" flexDirection="column" justifyContent="start" >
+        {targetImage && (
+          <ReactCrop 
+            ruleOfThirds
+            zoom
+            keepSelection
+            maxWidth={maxWidth}
+            src={targetImage} 
+            onChange={handleCropChange}
+            onImageLoaded={handleImageLoad}
+            onComplete={handleCropComplete}
+            crop={crop}
+            mt="0"
+          >
+          </ReactCrop>
+        )}
+        <Heading fontSize="2xl">分割後イメージ</Heading>
+        {isLoading ? (
+      <Loading />
+    ) : (
+      <>
+        {croppedImageLeftUrl && (
+          <HStack spacing="0">
+            <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+              <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
+            </Box>
+            <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+              <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
+            </Box>
+          </HStack>
+        )}
+        </>
+        )}
+        <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text>
+      </Stack>
       {!isMobile && (
       <Button 
         disabled={isLoading} 
