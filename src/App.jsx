@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import './App.css';
-import { Stack, Heading, Flex, HStack, Image, Button, Box, Text, Spacer } from '@chakra-ui/react'
+import { Stack, Heading, Flex, HStack, VStack, Image, Button, Box, Text, Spacer } from '@chakra-ui/react'
 import ReactCrop from 'react-image-crop'
 import Loading from './component/Loading';
 // import { isMobile } from "react-device-detect"
@@ -102,6 +102,20 @@ function App() {
     });
   }
 
+  const saveLeftImage = () => {
+    let dlLink = document.createElement('a')
+    dlLink.href = croppedImageLeftUrl
+    dlLink.download = 'left.png'
+    dlLink.click()
+  }
+
+  const saveRightImage = () => {
+    let dlLink = document.createElement('a')
+    dlLink.href = croppedImageRightUrl
+    dlLink.download = 'right.png'
+    dlLink.click()
+  }
+
   const saveImages = () => {
     let dlLink = document.createElement('a')
     dlLink.href = croppedImageLeftUrl
@@ -189,12 +203,30 @@ function App() {
       <>
         {croppedImageLeftUrl && (
           <HStack spacing="0">
-            <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-              <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
-            </Box>
-            <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-              <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
-            </Box>
+            <VStack>
+              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+                <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
+              </Box>
+              <Button 
+                disabled={isLoading} 
+                onClick={saveLeftImage} 
+                colorScheme="twitter"
+              >
+                左側保存
+              </Button>
+            </VStack>
+            <VStack>
+              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+                <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
+              </Box>
+              <Button 
+                disabled={isLoading} 
+                onClick={saveRightImage} 
+                colorScheme="twitter"
+              >
+                右側保存
+              </Button>
+            </VStack>
           </HStack>
         )}
         </>
@@ -202,7 +234,7 @@ function App() {
         <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text>
       </Stack>
       {/* {!isMobile && ( */}
-      <Button 
+      {/* <Button 
         disabled={isLoading} 
         onClick={saveImages} 
         isFullWidth 
@@ -211,7 +243,7 @@ function App() {
         colorScheme="twitter"
       >
         保存
-      </Button>
+      </Button> */}
       {/* )} */}
     </Flex>
   );
