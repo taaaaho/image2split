@@ -116,17 +116,17 @@ function App() {
     dlLink.click()
   }
 
-  const saveImages = () => {
-    let dlLink = document.createElement('a')
-    dlLink.href = croppedImageLeftUrl
-    dlLink.download = 'left.png'
-    dlLink.click()
+  // const saveImages = () => {
+  //   let dlLink = document.createElement('a')
+  //   dlLink.href = croppedImageLeftUrl
+  //   dlLink.download = 'left.png'
+  //   dlLink.click()
 
-    let dlLink2 = document.createElement('a')
-    dlLink2.href = croppedImageRightUrl
-    dlLink2.download = 'right.png'
-    dlLink2.click()
-  }
+  //   let dlLink2 = document.createElement('a')
+  //   dlLink2.href = croppedImageRightUrl
+  //   dlLink2.download = 'right.png'
+  //   dlLink2.click()
+  // }
 
   const fileUpload = () => {
     console.log(inputRef.current);
