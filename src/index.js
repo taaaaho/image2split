@@ -4,9 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { ChakraProvider } from '@chakra-ui/react'
+import 'react-image-crop/dist/ReactCrop.css';
+// import Head from 'next/head'
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <head>
+        <title>Resize</title>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width,initial-scale=1" />			
+        <script src="https://unpkg.com/react-image-crop/dist/ReactCrop.min.js"></script>
+      </head> */}
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
