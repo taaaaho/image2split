@@ -109,14 +109,6 @@ function App() {
     dlLink2.click()
   }
 
-  const isSmartPhone = () =>  {
-    if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   return (
     <Flex
       m="0"
