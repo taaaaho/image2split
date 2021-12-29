@@ -3,6 +3,7 @@ import './App.css';
 import { Stack, Heading, Input, Flex, HStack, Image, Button, Box, Text } from '@chakra-ui/react'
 import ReactCrop from 'react-image-crop'
 import Loading from './component/Loading';
+import { isMobile } from "react-device-detect"
 
 function App() {
   const [targetImage, setTargetImage] = useState('')
@@ -108,6 +109,14 @@ function App() {
     dlLink2.click()
   }
 
+  const isSmartPhone = () =>  {
+    if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   return (
     <Flex
       m="0"
@@ -152,9 +161,9 @@ function App() {
           )}
           </>
           )}
-          <Text color="gray">※スマホの場合は保存ボタンが使えないため、各画像を長押しして画像を保存してください。</Text>
+          <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text>
         </Stack>
-        
+      {!isMobile && (
       <Button 
         disabled={isLoading} 
         onClick={saveImages} 
@@ -165,6 +174,7 @@ function App() {
       >
         保存
       </Button>
+      )}
     </Flex>
   );
 }
