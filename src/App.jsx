@@ -49,13 +49,13 @@ function App() {
         0
       );
       setCroppedImageLeftUrl(croppedImageUrl);
-      const croppedImageUrl2 = await getCroppedImg(
+      const croppedImageRightUrl = await getCroppedImg(
         imageRef,
         crop,
         'croppedImageRight.jpeg',
         crop.width
       );
-      setCroppedImageRightUrl(croppedImageUrl2);
+      setCroppedImageRightUrl(croppedImageRightUrl);
     }
     setIsLoading(false)
   };
@@ -89,7 +89,7 @@ function App() {
       canvas.toBlob(
         (blob) => {
           if (!blob) {
-            //reject(new Error('Canvas is empty'));
+            reject(new Error('Canvas is empty'));
             return;
           }
           blob.name = fileName;
@@ -120,26 +120,28 @@ function App() {
   }
 
   const divideTwo = () => {
-    setCrop({
+    const newCrop = {
       unit: 'px',
       x: 0,
       y: 0,
       width: imageRef.width/2,
       height: imageRef.height,
       aspect: false,
-    })
-    handleCropComplete(crop)
+    }
+    setCrop(newCrop)
+    handleCropComplete(newCrop)
   }
 
   const squareAspect = () => {
-    setCrop({
+    const newCrop = {
       unit: 'px',
       x: 0,
       y: 0,
       width: imageRef.width/2,
       aspect: 1,
-    })
-    handleCropComplete(crop)
+    }
+    setCrop(newCrop)
+    handleCropComplete(newCrop)
   }
 
   return (
@@ -199,7 +201,7 @@ function App() {
         )}
         <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text>
       </Stack>
-      {!isMobile && (
+      {/* {!isMobile && ( */}
       <Button 
         disabled={isLoading} 
         onClick={saveImages} 
@@ -210,7 +212,7 @@ function App() {
       >
         保存
       </Button>
-      )}
+      {/* )} */}
     </Flex>
   );
 }
