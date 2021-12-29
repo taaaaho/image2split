@@ -3,7 +3,7 @@ import './App.css';
 import { Stack, Heading, Flex, HStack, Image, Button, Box, Text, Spacer } from '@chakra-ui/react'
 import ReactCrop from 'react-image-crop'
 import Loading from './component/Loading';
-import { isMobile } from "react-device-detect"
+// import { isMobile } from "react-device-detect"
 
 function App() {
   const [targetImage, setTargetImage] = useState('')
