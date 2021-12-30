@@ -50,6 +50,7 @@ function App() {
         'croppedImageLeft.jpeg',
         0
       );
+      alert(croppedImageUrl)
       setCroppedImageLeftUrl(croppedImageUrl);
       const croppedImageRightUrl = await getCroppedImg(
         imageRef,
@@ -100,6 +101,7 @@ function App() {
         (blob) => {
           if (!blob) {
             alert('getCroppedImg-Promise-Reject')
+            alert(blob)
             reject(new Error('Canvas is empty'));
             return;
           }
