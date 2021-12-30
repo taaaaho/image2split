@@ -64,32 +64,36 @@ function App() {
   };
 
   const getCroppedImg = async (image, crop, fileName, xOffset) => {
-    alert('getCroppedImg')
-    const canvas = document.createElement('canvas');
-    const pixelRatio = window.devicePixelRatio;
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    const ctx = canvas.getContext('2d');
+    alert('getCroppedImg-new')
+    try {
+      const canvas = document.createElement('canvas');
+      const pixelRatio = window.devicePixelRatio;
+      const scaleX = image.naturalWidth / image.width;
+      const scaleY = image.naturalHeight / image.height;
+      const ctx = canvas.getContext('2d');
 
-    canvas.width = crop.width * pixelRatio * scaleX;
-    canvas.height = crop.height * pixelRatio * scaleY;
+      canvas.width = crop.width * pixelRatio * scaleX;
+      canvas.height = crop.height * pixelRatio * scaleY;
 
-    alert('getCroppedImg-setTransform')
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx.imageSmoothingQuality = 'high';
+      alert('getCroppedImg-setTransform')
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      ctx.imageSmoothingQuality = 'high';
 
-    alert('getCroppedImg-drawImage')
-    ctx.drawImage(
-      image,
-      (crop.x+xOffset) * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width * scaleX,
-      crop.height * scaleY
-    );
+      alert('getCroppedImg-drawImage')
+      ctx.drawImage(
+        image,
+        (crop.x+xOffset) * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        crop.width * scaleX,
+        crop.height * scaleY
+      );
+    } catch (e) {
+      alert(e)
+    }
 
     alert('getCroppedImg-Promise-before')
     return new Promise((resolve, reject) => {
