@@ -44,6 +44,7 @@ function App() {
     alert('handleCropComplete-Start')
     setIsLoading(true)
     if (imageRef && crop.width && crop.height) {
+      try {
       const croppedImageUrl = await getCroppedImg(
         imageRef,
         crop,
@@ -59,6 +60,9 @@ function App() {
         crop.width
       );
       setCroppedImageRightUrl(croppedImageRightUrl);
+    } catch (e) {
+      alert('処理でエラーが発生しました。もう一度やり直してください。')
+    }
     }
     alert('handleCropComplete-End')
     setIsLoading(false)
