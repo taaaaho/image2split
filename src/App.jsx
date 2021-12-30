@@ -91,9 +91,7 @@ function App() {
         crop.width * scaleX,
         crop.height * scaleY
       );
-    } catch (e) {
-      alert(e)
-    }
+    
 
     alert('getCroppedImg-Promise-before')
     return new Promise((resolve, reject) => {
@@ -113,6 +111,9 @@ function App() {
         1
       );
     });
+  } catch (e) {
+    alert(e)
+  }
   }
 
   const saveLeftImage = () => {
