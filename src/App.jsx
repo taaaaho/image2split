@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react'
 import './App.css';
-import { Stack, Heading, Flex, HStack, VStack, Image, Button, Box, Text, Spacer } from '@chakra-ui/react'
+import { Stack, Heading, Flex, HStack, VStack, Image, Button, Box, Spacer } from '@chakra-ui/react'
 import ReactCrop from 'react-image-crop'
 import Loading from './component/Loading';
-// import { isMobile } from "react-device-detect"
 
 function App() {
   const [targetImage, setTargetImage] = useState('')
@@ -116,18 +115,6 @@ function App() {
     dlLink.click()
   }
 
-  // const saveImages = () => {
-  //   let dlLink = document.createElement('a')
-  //   dlLink.href = croppedImageLeftUrl
-  //   dlLink.download = 'left.png'
-  //   dlLink.click()
-
-  //   let dlLink2 = document.createElement('a')
-  //   dlLink2.href = croppedImageRightUrl
-  //   dlLink2.download = 'right.png'
-  //   dlLink2.click()
-  // }
-
   const fileUpload = () => {
     console.log(inputRef.current);
     inputRef.current.click();
@@ -231,20 +218,8 @@ function App() {
         )}
         </>
         )}
-        <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text>
+        {/* <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text> */}
       </Stack>
-      {/* {!isMobile && ( */}
-      {/* <Button 
-        disabled={isLoading} 
-        onClick={saveImages} 
-        isFullWidth 
-        position="fixed" 
-        bottom="0" 
-        colorScheme="twitter"
-      >
-        保存
-      </Button> */}
-      {/* )} */}
     </Flex>
   );
 }
