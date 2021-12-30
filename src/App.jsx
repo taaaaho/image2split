@@ -66,6 +66,7 @@ function App() {
 
   const getCroppedImg = async (image, crop, fileName, xOffset) => {
     try {
+      alert(image)
       const canvas = document.createElement('canvas');
       const pixelRatio = window.devicePixelRatio;
       const scaleX = image.naturalWidth / image.width;
