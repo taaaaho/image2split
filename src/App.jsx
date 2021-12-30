@@ -18,7 +18,6 @@ function App() {
   const [maxWidth, setMaxWidth] = useState()
 
   const handleImageSelect = (e) => {
-    alert('handleImageSelect')
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.addEventListener('load', () => {
@@ -30,7 +29,6 @@ function App() {
 
 
   const handleImageLoad = (image) => {
-    alert('handleImageLoad')
     setMaxWidth(image.width / 2)
     setImageRef(image)
   }
@@ -41,50 +39,49 @@ function App() {
   }
 
   const handleCropComplete = async (crop) => {
-    alert('handleCropComplete-Start')
     setIsLoading(true)
     if (imageRef && crop.width && crop.height) {
       try {
-      const croppedImageUrl = await getCroppedImg(
-        imageRef,
-        crop,
-        'croppedImageLeft.jpeg',
-        0
-      );
-      alert(croppedImageUrl)
-      setCroppedImageLeftUrl(croppedImageUrl);
-      const croppedImageRightUrl = await getCroppedImg(
-        imageRef,
-        crop,
-        'croppedImageRight.jpeg',
-        crop.width
-      );
-      setCroppedImageRightUrl(croppedImageRightUrl);
-    } catch (e) {
-      alert('処理でエラーが発生しました。もう一度やり直してください。')
+        const croppedImageUrl = await getCroppedImg(
+          imageRef,
+          crop,
+          'croppedImageLeft.jpeg',
+          0
+        );
+        alert(croppedImageUrl)
+        setCroppedImageLeftUrl(croppedImageUrl);
+        const croppedImageRightUrl = await getCroppedImg(
+          imageRef,
+          crop,
+          'croppedImageRight.jpeg',
+          crop.width
+        );
+        setCroppedImageRightUrl(croppedImageRightUrl);
+      } catch (e) {
+        alert('処理でエラーが発生しました。もう一度やり直してください。')
+      }
     }
-    }
-    alert('handleCropComplete-End')
     setIsLoading(false)
   };
 
   const getCroppedImg = async (image, crop, fileName, xOffset) => {
-    alert('getCroppedImg-new')
     try {
       const canvas = document.createElement('canvas');
       const pixelRatio = window.devicePixelRatio;
       const scaleX = image.naturalWidth / image.width;
       const scaleY = image.naturalHeight / image.height;
-      const ctx = canvas.getContext('2d');
 
       canvas.width = crop.width * pixelRatio * scaleX;
       canvas.height = crop.height * pixelRatio * scaleY;
 
-      alert('getCroppedImg-setTransform')
+      const ctx = canvas.getContext('2d');
+
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       ctx.imageSmoothingQuality = 'high';
 
-      alert('getCroppedImg-drawImage')
+      alert(canvas)
+      alert(ctx)
+      alert(crop)
       ctx.drawImage(
         image,
         (crop.x+xOffset) * scaleX,
@@ -98,7 +95,6 @@ function App() {
       );
     
 
-    alert('getCroppedImg-Promise-before')
     return new Promise((resolve, reject) => {
       alert('getCroppedImg-Promise-start')
       canvas.toBlob(
