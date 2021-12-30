@@ -89,10 +89,13 @@ function App() {
       crop.height * scaleY
     );
 
+    alert('getCroppedImg-Promise-before')
     return new Promise((resolve, reject) => {
+      alert('getCroppedImg-Promise-start')
       canvas.toBlob(
         (blob) => {
           if (!blob) {
+            alert('getCroppedImg-Promise-Reject')
             reject(new Error('Canvas is empty'));
             return;
           }
