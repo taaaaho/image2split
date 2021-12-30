@@ -74,9 +74,11 @@ function App() {
     canvas.width = crop.width * pixelRatio * scaleX;
     canvas.height = crop.height * pixelRatio * scaleY;
 
+    alert('getCroppedImg-setTransform')
     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     ctx.imageSmoothingQuality = 'high';
 
+    alert('getCroppedImg-drawImage')
     ctx.drawImage(
       image,
       (crop.x+xOffset) * scaleX,
