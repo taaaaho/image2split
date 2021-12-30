@@ -18,6 +18,7 @@ function App() {
   const [maxWidth, setMaxWidth] = useState()
 
   const handleImageSelect = (e) => {
+    alert('handleImageSelect')
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.addEventListener('load', () => {
@@ -29,6 +30,7 @@ function App() {
 
 
   const handleImageLoad = (image) => {
+    alert('handleImageLoad')
     setMaxWidth(image.width / 2)
     setImageRef(image)
   }
@@ -39,6 +41,7 @@ function App() {
   }
 
   const handleCropComplete = async (crop) => {
+    alert('handleCropComplete-Start')
     setIsLoading(true)
     if (imageRef && crop.width && crop.height) {
       const croppedImageUrl = await getCroppedImg(
@@ -56,10 +59,12 @@ function App() {
       );
       setCroppedImageRightUrl(croppedImageRightUrl);
     }
+    alert('handleCropComplete-End')
     setIsLoading(false)
   };
 
   const getCroppedImg = async (image, crop, fileName, xOffset) => {
+    alert('getCroppedImg')
     const canvas = document.createElement('canvas');
     const pixelRatio = window.devicePixelRatio;
     const scaleX = image.naturalWidth / image.width;
@@ -121,6 +126,7 @@ function App() {
   }
 
   const divideTwo = () => {
+    alert('divideTwo')
     const newCrop = {
       unit: 'px',
       x: 0,
@@ -134,6 +140,7 @@ function App() {
   }
 
   const squareAspect = () => {
+    alert('squareAspect')
     const newCrop = {
       unit: 'px',
       x: 0,
