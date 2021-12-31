@@ -16,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const inputRef = useRef()
   const [maxWidth, setMaxWidth] = useState()
+  const [isError, setIsError] = useState(false)
 
   const handleImageSelect = (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -30,6 +31,7 @@ function App() {
 
   const handleImageLoad = (image) => {
     setMaxWidth(image.width / 2)
+    setIsError(false)
     setImageRef(image)
   }
 
@@ -41,64 +43,77 @@ function App() {
   const handleCropComplete = async (crop) => {
     setIsLoading(true)
     if (imageRef && crop.width && crop.height) {
-      const croppedImageUrl = await getCroppedImg(
-        imageRef,
-        crop,
-        'croppedImageLeft.jpeg',
-        0
-      );
-      setCroppedImageLeftUrl(croppedImageUrl);
-      const croppedImageRightUrl = await getCroppedImg(
-        imageRef,
-        crop,
-        'croppedImageRight.jpeg',
-        crop.width
-      );
-      setCroppedImageRightUrl(croppedImageRightUrl);
+      try {
+        const croppedImageUrl = await getCroppedImg(
+          imageRef,
+          crop,
+          'croppedImageLeft.jpeg',
+          0
+        );
+        setCroppedImageLeftUrl(croppedImageUrl);
+        const croppedImageRightUrl = await getCroppedImg(
+          imageRef,
+          crop,
+          'croppedImageRight.jpeg',
+          crop.width
+        );
+        setCroppedImageRightUrl(croppedImageRightUrl);
+      } catch (e) {
+        setIsError(true)
+        alert('処理でエラーが発生しました。別の画像でお試しください。')
+      }
     }
     setIsLoading(false)
   };
 
   const getCroppedImg = async (image, crop, fileName, xOffset) => {
-    const canvas = document.createElement('canvas');
-    const pixelRatio = window.devicePixelRatio;
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    const ctx = canvas.getContext('2d');
+    try {
+      const canvas = document.createElement('canvas');
+      const pixelRatio = window.devicePixelRatio;
+      const scaleX = image.naturalWidth / image.width;
+      const scaleY = image.naturalHeight / image.height;
 
-    canvas.width = crop.width * pixelRatio * scaleX;
-    canvas.height = crop.height * pixelRatio * scaleY;
+      canvas.width = crop.width * pixelRatio * scaleX;
+      canvas.height = crop.height * pixelRatio * scaleY;
 
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx.imageSmoothingQuality = 'high';
+      let ctx = canvas.getContext('2d');
 
-    ctx.drawImage(
-      image,
-      (crop.x+xOffset) * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width * scaleX,
-      crop.height * scaleY
-    );
+      // while (!ctx) {
+      //   ctx = canvas.getContext('2d');
+      // }
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      ctx.imageSmoothingQuality = 'high';
 
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) {
-            reject(new Error('Canvas is empty'));
-            return;
-          }
-          blob.name = fileName;
-          const fileUrl = window.URL.createObjectURL(blob);
-          resolve(fileUrl);
-        },
-        'image/jpeg',
-        1
+      ctx.drawImage(
+        image,
+        (crop.x+xOffset) * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        crop.width * scaleX,
+        crop.height * scaleY
       );
-    });
+    
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error('Canvas is empty'));
+              return;
+            }
+            blob.name = fileName;
+            const fileUrl = window.URL.createObjectURL(blob);
+            resolve(fileUrl);
+          },
+          'image/jpeg',
+          1
+        );
+      });
+    } catch (e) {
+      setIsError(true)
+    }
   }
 
   const saveLeftImage = () => {
@@ -185,40 +200,42 @@ function App() {
         )}
         <Heading fontSize="2xl">分割後イメージ</Heading>
         {isLoading ? (
-      <Loading />
-    ) : (
-      <>
-        {croppedImageLeftUrl && (
-          <HStack spacing="0">
-            <VStack>
-              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-                <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
-              </Box>
-              <Button 
-                disabled={isLoading} 
-                onClick={saveLeftImage} 
-                colorScheme="twitter"
-              >
-                左側保存
-              </Button>
-            </VStack>
-            <VStack>
-              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-                <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
-              </Box>
-              <Button 
-                disabled={isLoading} 
-                onClick={saveRightImage} 
-                colorScheme="twitter"
-              >
-                右側保存
-              </Button>
-            </VStack>
-          </HStack>
+          <Loading />
+        ) : (
+          <>
+            {isError && (
+              <Box>エラーが発生しました。別の画像を試してください。</Box>
+            )}
+            {croppedImageLeftUrl && (
+              <HStack spacing="0">
+                <VStack>
+                  <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+                    <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
+                  </Box>
+                  <Button 
+                    disabled={isLoading} 
+                    onClick={saveLeftImage} 
+                    colorScheme="twitter"
+                  >
+                    左側保存
+                  </Button>
+                </VStack>
+                <VStack>
+                  <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+                    <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
+                  </Box>
+                  <Button 
+                    disabled={isLoading} 
+                    onClick={saveRightImage} 
+                    colorScheme="twitter"
+                  >
+                    右側保存
+                  </Button>
+                </VStack>
+              </HStack>
+            )}
+          </>
         )}
-        </>
-        )}
-        {/* <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text> */}
       </Stack>
     </Flex>
   );
