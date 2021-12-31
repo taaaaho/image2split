@@ -149,7 +149,6 @@ function App() {
   }
 
   const squareAspect = () => {
-    alert('squareAspect')
     const newCrop = {
       unit: 'px',
       x: 0,
