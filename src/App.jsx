@@ -78,9 +78,9 @@ function App() {
 
       let ctx = canvas.getContext('2d');
 
-      while (!ctx) {
-        ctx = canvas.getContext('2d');
-      }
+      // while (!ctx) {
+      //   ctx = canvas.getContext('2d');
+      // }
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       ctx.imageSmoothingQuality = 'high';
 
