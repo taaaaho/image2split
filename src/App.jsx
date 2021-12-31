@@ -30,6 +30,7 @@ function App() {
 
   const handleImageLoad = (image) => {
     setMaxWidth(image.width / 2)
+    alert('set image ref')
     setImageRef(image)
   }
 
@@ -66,7 +67,6 @@ function App() {
 
   const getCroppedImg = async (image, crop, fileName, xOffset) => {
     try {
-      alert(image)
       const canvas = document.createElement('canvas');
       const pixelRatio = window.devicePixelRatio;
       const scaleX = image.naturalWidth / image.width;
@@ -75,14 +75,16 @@ function App() {
       canvas.width = crop.width * pixelRatio * scaleX;
       canvas.height = crop.height * pixelRatio * scaleY;
 
+      alert('canvas is ')
+      alert(canvas.width)
+      alert(canvas.height)
       const ctx = canvas.getContext('2d');
 
+      alert('ctx is ')
+      alert(ctx)
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       ctx.imageSmoothingQuality = 'high';
 
-      alert(canvas)
-      alert(ctx)
-      alert(crop)
       ctx.drawImage(
         image,
         (crop.x+xOffset) * scaleX,
