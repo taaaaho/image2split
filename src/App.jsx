@@ -30,7 +30,6 @@ function App() {
 
   const handleImageLoad = (image) => {
     setMaxWidth(image.width / 2)
-    alert('set image ref')
     setImageRef(image)
   }
 
@@ -75,11 +74,11 @@ function App() {
       canvas.width = crop.width * pixelRatio * scaleX;
       canvas.height = crop.height * pixelRatio * scaleY;
 
-      alert('canvas is ')
-      alert(canvas.width)
-      alert(canvas.height)
-      const ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d');
 
+      while (!ctx) {
+        ctx = canvas.getContext('2d');
+      }
       alert('ctx is ')
       alert(ctx)
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
@@ -141,7 +140,6 @@ function App() {
   }
 
   const divideTwo = () => {
-    alert('divideTwo')
     const newCrop = {
       unit: 'px',
       x: 0,
