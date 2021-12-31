@@ -16,6 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const inputRef = useRef()
   const [maxWidth, setMaxWidth] = useState()
+  const [isError, setIsError] = useState(false)
 
   const handleImageSelect = (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -30,6 +31,7 @@ function App() {
 
   const handleImageLoad = (image) => {
     setMaxWidth(image.width / 2)
+    setIsError(false)
     setImageRef(image)
   }
 
@@ -48,7 +50,6 @@ function App() {
           'croppedImageLeft.jpeg',
           0
         );
-        alert(croppedImageUrl)
         setCroppedImageLeftUrl(croppedImageUrl);
         const croppedImageRightUrl = await getCroppedImg(
           imageRef,
@@ -58,7 +59,8 @@ function App() {
         );
         setCroppedImageRightUrl(croppedImageRightUrl);
       } catch (e) {
-        alert('処理でエラーが発生しました。もう一度やり直してください。')
+        setIsError(true)
+        alert('処理でエラーが発生しました。別の画像でお試しください。')
       }
     }
     setIsLoading(false)
@@ -79,9 +81,6 @@ function App() {
       while (!ctx) {
         ctx = canvas.getContext('2d');
       }
-      alert('canvas is ')
-      alert(canvas.width)
-      alert(canvas.height)
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       ctx.imageSmoothingQuality = 'high';
 
@@ -97,28 +96,24 @@ function App() {
         crop.height * scaleY
       );
     
-
-    return new Promise((resolve, reject) => {
-      alert('getCroppedImg-Promise-start')
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) {
-            alert('getCroppedImg-Promise-Reject')
-            alert(blob)
-            reject(new Error('Canvas is empty'));
-            return;
-          }
-          blob.name = fileName;
-          const fileUrl = window.URL.createObjectURL(blob);
-          resolve(fileUrl);
-        },
-        'image/jpeg',
-        1
-      );
-    });
-  } catch (e) {
-    alert(e)
-  }
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error('Canvas is empty'));
+              return;
+            }
+            blob.name = fileName;
+            const fileUrl = window.URL.createObjectURL(blob);
+            resolve(fileUrl);
+          },
+          'image/jpeg',
+          1
+        );
+      });
+    } catch (e) {
+      setIsError(true)
+    }
   }
 
   const saveLeftImage = () => {
@@ -206,40 +201,42 @@ function App() {
         )}
         <Heading fontSize="2xl">分割後イメージ</Heading>
         {isLoading ? (
-      <Loading />
-    ) : (
-      <>
-        {croppedImageLeftUrl && (
-          <HStack spacing="0">
-            <VStack>
-              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-                <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
-              </Box>
-              <Button 
-                disabled={isLoading} 
-                onClick={saveLeftImage} 
-                colorScheme="twitter"
-              >
-                左側保存
-              </Button>
-            </VStack>
-            <VStack>
-              <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
-                <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
-              </Box>
-              <Button 
-                disabled={isLoading} 
-                onClick={saveRightImage} 
-                colorScheme="twitter"
-              >
-                右側保存
-              </Button>
-            </VStack>
-          </HStack>
+          <Loading />
+        ) : (
+          <>
+            {isError && (
+              <Box>エラーが発生しました。別の画像を試してください。</Box>
+            )}
+            {croppedImageLeftUrl && (
+              <HStack spacing="0">
+                <VStack>
+                  <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+                    <Image alt="Crop" maxWidth="45vw" src={croppedImageLeftUrl} />
+                  </Box>
+                  <Button 
+                    disabled={isLoading} 
+                    onClick={saveLeftImage} 
+                    colorScheme="twitter"
+                  >
+                    左側保存
+                  </Button>
+                </VStack>
+                <VStack>
+                  <Box m="0" p="0" borderColor="black" borderWidth="thin" borderStyle="dashed">
+                    <Image alt="Crop" maxWidth="45vw" src={croppedImageRightUrl} />
+                  </Box>
+                  <Button 
+                    disabled={isLoading} 
+                    onClick={saveRightImage} 
+                    colorScheme="twitter"
+                  >
+                    右側保存
+                  </Button>
+                </VStack>
+              </HStack>
+            )}
+          </>
         )}
-        </>
-        )}
-        {/* <Text color="gray">※スマホ場合で画像を保存する場合は、各画像を長押しして画像を保存してください。</Text> */}
       </Stack>
     </Flex>
   );
