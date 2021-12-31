@@ -79,8 +79,9 @@ function App() {
       while (!ctx) {
         ctx = canvas.getContext('2d');
       }
-      alert('ctx is ')
-      alert(ctx)
+      alert('canvas is ')
+      alert(canvas.width)
+      alert(canvas.height)
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       ctx.imageSmoothingQuality = 'high';
 
